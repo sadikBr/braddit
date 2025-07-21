@@ -120,3 +120,10 @@
     @apply bg-background text-foreground;
   }
 }
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+  grid-template-rows: masonry;
+  grid-gap: 20px;
+}
