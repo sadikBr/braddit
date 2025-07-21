@@ -1,3 +1,4 @@
+import { Post } from "@/types";
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 
@@ -24,7 +25,12 @@ export default function useFetch<T>(endpoint: string) {
             sr_detail: true,
           },
         });
-        setData((prevData) => [...prevData, ...response.data.data.children]);
+        setData((prevData) => [
+          ...prevData,
+          ...response.data.data.children.filter(
+            (child: Post) => !child.data.is_gallery,
+          ),
+        ]);
         setAfter(response.data.data.after);
       } catch (error) {
         setError((error as Error).message);

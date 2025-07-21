@@ -2,26 +2,31 @@ import { Post } from "@/types";
 import PostCard from "./post-card";
 import Image from "next/image";
 
+type PostAttributes = {
+  type: string;
+  width?: number;
+  height?: number;
+  alt?: string;
+  url?: string;
+  text?: string;
+  html?: string;
+};
+
 function getPostTypeAndRequiredRenderingAttributes(post: Post) {
-  const postAttributes = {
-    type: "",
-    width: 1980,
-    height: 1080,
-    alt: post.data.title,
-    url: "",
-    text: "",
-    html: "",
-  };
+  const postAttributes: PostAttributes = { type: "" };
 
   if (post.data.is_self) {
     postAttributes.type = "text";
     postAttributes.text = post.data.selftext;
-  } else if (post.data.url_overridden_by_dest?.match(/(jpe?g|png|gifv?)$/g)) {
+  } else if (
+    post.data.url_overridden_by_dest?.match(/(jpe?g|png|gifv?)$/g) ||
+    post.data.url.match(/(jpe?g|png|gifv?)$/g)
+  ) {
     postAttributes["type"] = "image";
-    postAttributes["url"] = post.data.url_overridden_by_dest;
-  } else if (post.data.url.match(/(jpe?g|png|gifv?)$/g)) {
-    postAttributes["type"] = "image";
-    postAttributes["url"] = post.data.url;
+    postAttributes["url"] = post.data.url_overridden_by_dest || post.data.url;
+    postAttributes["width"] = 1980;
+    postAttributes["height"] = 1080;
+    postAttributes["alt"] = post.data.title;
   } else if (post.data.url.match(/(mp4|webm)$/g)) {
     postAttributes["type"] = "video";
     postAttributes["url"] = post.data.url;
@@ -59,8 +64,8 @@ export default function PostRenderer({ post }: { post: Post }) {
       )}
       {extractedAttributes.type === "image" && (
         <Image
-          src={extractedAttributes.url}
-          alt={extractedAttributes.alt}
+          src={extractedAttributes.url!}
+          alt={extractedAttributes.alt!}
           width={extractedAttributes.width}
           height={extractedAttributes.height}
           className="w-full h-auto"
@@ -76,7 +81,9 @@ export default function PostRenderer({ post }: { post: Post }) {
         )}
       {extractedAttributes.type === "video" &&
         extractedAttributes.url === "" && (
-          <div dangerouslySetInnerHTML={{ __html: extractedAttributes.html }} />
+          <div
+            dangerouslySetInnerHTML={{ __html: extractedAttributes.html! }}
+          />
         )}
     </PostCard>
   );
