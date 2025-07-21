@@ -25,7 +25,7 @@ export default function PostCard({
     post.data.sr_detail.icon_img;
 
   return (
-    <Card className="w-full h-fit mb-2">
+    <Card className="w-full h-fit">
       <CardHeader>
         <CardDescription className="flex items-center gap-2 mb-2">
           <Link

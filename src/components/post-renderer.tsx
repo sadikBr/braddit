@@ -16,15 +16,13 @@ function getPostTypeAndRequiredRenderingAttributes(post: Post) {
   if (post.data.is_self) {
     postAttributes.type = "text";
     postAttributes.text = post.data.selftext;
-  } else if (
-    post.data.url_overridden_by_dest?.match(/(\.jpe?g|\.png|\.gifv?)$/g)
-  ) {
+  } else if (post.data.url_overridden_by_dest?.match(/(jpe?g|png|gifv?)$/g)) {
     postAttributes["type"] = "image";
     postAttributes["url"] = post.data.url_overridden_by_dest;
-  } else if (post.data.url.match(/(\.jpe?g|\.png|\.gifv?)$/g)) {
+  } else if (post.data.url.match(/(jpe?g|png|gifv?)$/g)) {
     postAttributes["type"] = "image";
     postAttributes["url"] = post.data.url;
-  } else if (post.data.url.match(/(\.mp4|\.webm)$/g)) {
+  } else if (post.data.url.match(/(mp4|webm)$/g)) {
     postAttributes["type"] = "video";
     postAttributes["url"] = post.data.url;
   } else if (
@@ -35,7 +33,9 @@ function getPostTypeAndRequiredRenderingAttributes(post: Post) {
     postAttributes["type"] = "video";
 
     const redditVideo =
-      post.data.media?.reddit_video || post.data.secure_media?.reddit_video;
+      post.data.media?.reddit_video ||
+      post.data.secure_media?.reddit_video ||
+      post.data.preview?.reddit_video_preview;
     if (redditVideo) {
       postAttributes.url = redditVideo.fallback_url;
     }
@@ -75,7 +75,7 @@ export default function PostRenderer({ post }: { post: Post }) {
           />
         )}
       {extractedAttributes.type === "video" &&
-        extractedAttributes.url !== "" && (
+        extractedAttributes.url === "" && (
           <div dangerouslySetInnerHTML={{ __html: extractedAttributes.html }} />
         )}
     </PostCard>
