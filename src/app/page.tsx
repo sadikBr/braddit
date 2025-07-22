@@ -9,7 +9,7 @@ import useFetch from "@/hooks/use-fetch";
 import { Post } from "@/types";
 import { AlertCircleIcon } from "lucide-react";
 import { useState } from "react";
-import Masonry from "react-responsive-masonry";
+import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 
 export default function Home() {
   const [selectedValue, setSelectedValue] = useState("/");
@@ -48,11 +48,13 @@ export default function Home() {
       )}
 
       <div className="w-full max-w-[1480px] mx-auto mt-22 px-4">
-        <Masonry gutter="8px">
-          {posts.map((post) => (
-            <PostRenderer key={post.data.id} post={post} />
-          ))}
-        </Masonry>
+        <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 750: 2, 900: 3 }}>
+          <Masonry columnsCount={3} gutter="8px">
+            {posts.map((post) => (
+              <PostRenderer key={post.data.id} post={post} />
+            ))}
+          </Masonry>
+        </ResponsiveMasonry>
       </div>
 
       {loading && (
@@ -63,7 +65,7 @@ export default function Home() {
 
       {after.length > 0 && !loading && (
         <Button
-          className="cursor-pointer my-6 relative left-1/2 -translate-x-0.5"
+          className="cursor-pointer my-6 relative left-1/2 -translate-x-1/2"
           onClick={() => fetchNextPage()}
           disabled={loading}
         >

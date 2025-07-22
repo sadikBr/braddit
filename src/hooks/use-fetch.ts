@@ -17,7 +17,7 @@ export default function useFetch<T>(
   } = {
     limit: 100,
     sr_detail: false,
-    debounceDelay: 300,
+    debounceDelay: 120,
     nsfw: false,
   },
 ) {
@@ -65,7 +65,7 @@ export default function useFetch<T>(
         setLoading(false);
       }
     },
-    [endpoint, options.limit, options.sr_detail],
+    [endpoint, options.limit, options.sr_detail, options.nsfw],
   );
 
   useEffect(() => {

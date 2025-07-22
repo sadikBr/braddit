@@ -13,7 +13,7 @@ import {
 import { IoHome, IoSearch } from "react-icons/io5";
 import { FaArrowUpRightDots, FaBorderAll } from "react-icons/fa6";
 import { Input } from "@/components/ui/input";
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import useFetch from "@/hooks/use-fetch";
 import { Subreddit } from "@/types";
@@ -41,7 +41,7 @@ const NavBar = ({
   const { data: subreddits, loading } = useFetch<Subreddit>(endpoint, {
     limit: 10,
     sr_detail: false,
-    debounceDelay: 300,
+    debounceDelay: 120,
     nsfw: true,
   });
 
@@ -76,7 +76,7 @@ const NavBar = ({
             value={searchQuery}
             onChange={(event) => setSearchQuery(event.target.value)}
             onFocus={() => setIsFocused(true)}
-            onBlur={() => setIsFocused(false)}
+            onBlur={() => setTimeout(() => setIsFocused(false), 100)}
           />
           {isFocused && searchQuery !== "" && (
             <div className="flex flex-col absolute top-12 left-0 w-full bg-background border-2 border-accent rounded-md">
