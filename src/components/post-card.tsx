@@ -25,8 +25,8 @@ export default function PostCard({
     post.data.sr_detail.icon_img;
 
   return (
-    <Card className="w-full h-fit">
-      <CardHeader>
+    <Card className="w-full h-fit p-3">
+      <CardHeader className="px-0">
         <CardDescription className="flex items-center gap-2 mb-2">
           <Link
             className="flex items-center gap-2 hover:underline"
@@ -37,6 +37,8 @@ export default function PostCard({
                 <Image
                   src={subredditImageUrl}
                   alt="Subreddit Profile Image"
+                  priority={true}
+                  unoptimized={true}
                   width={128}
                   height={128}
                   className="w-full h-full object-contain bg-white"
@@ -66,8 +68,8 @@ export default function PostCard({
         </CardDescription>
         <CardTitle>{post.data.title}</CardTitle>
       </CardHeader>
-      <CardContent>{children}</CardContent>
-      <CardFooter className="flex items-center justify-between">
+      <CardContent className="px-0">{children}</CardContent>
+      <CardFooter className="flex items-center justify-between px-0">
         <div className="flex items-center gap-2">
           <FaArrowUp className="cursor-pointer" size={16} />
           <span className="text-xs font-bold">

@@ -70,6 +70,7 @@ export default function PostRenderer({ post }: { post: Post }) {
           width={extractedAttributes.width}
           height={extractedAttributes.height}
           loading="lazy"
+          fetchPriority="high"
           className="w-full h-auto"
         />
       )}
@@ -78,6 +79,7 @@ export default function PostRenderer({ post }: { post: Post }) {
           <video
             src={extractedAttributes.url}
             controls
+            preload="auto"
             className="w-full h-auto"
           />
         )}

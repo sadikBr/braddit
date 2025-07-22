@@ -41,7 +41,7 @@ export default function SubredditPage({
 
       <div className="w-full max-w-[1480px] mx-auto px-4">
         <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 750: 2, 900: 3 }}>
-          <Masonry columnsCount={3} gutter="8px">
+          <Masonry>
             {data.map((post) => (
               <PostRenderer key={post.data.id} post={post} />
             ))}

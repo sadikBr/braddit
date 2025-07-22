@@ -89,7 +89,7 @@ const NavBar = ({
 
               {/* Autocomplete results */}
               {loading ? (
-                <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-4 p-3">
                   <Skeleton className="h-12 w-12 rounded-full" />
                   <div className="space-y-2">
                     <Skeleton className="h-4 w-[250px]" />
@@ -112,6 +112,8 @@ const NavBar = ({
                       {imageUrl?.length > 0 ? (
                         <Image
                           className="rounded-full w-8 h-8 object-contain"
+                          unoptimized={true}
+                          priority={true}
                           src={imageUrl}
                           alt={subreddit.data.display_name}
                           width={1980}

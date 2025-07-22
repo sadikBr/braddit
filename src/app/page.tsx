@@ -48,8 +48,10 @@ export default function Home() {
       )}
 
       <div className="w-full max-w-[1480px] mx-auto mt-22 px-4">
-        <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 750: 2, 900: 3 }}>
-          <Masonry columnsCount={3} gutter="8px">
+        <ResponsiveMasonry
+          columnsCountBreakPoints={{ 350: 1, 750: 2, 1200: 3 }}
+        >
+          <Masonry>
             {posts.map((post) => (
               <PostRenderer key={post.data.id} post={post} />
             ))}
@@ -58,7 +60,7 @@ export default function Home() {
       </div>
 
       {loading && (
-        <div className="flex justify-center items-center h-16 mb-y">
+        <div className="flex justify-center items-center h-16 my-6">
           <div className="w-16 h-16 border-4 border-dashed rounded-full animate-spin border-accent-foreground"></div>
         </div>
       )}
