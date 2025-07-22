@@ -1,6 +1,5 @@
 "use client";
 
-import NavBar from "@/components/nav-bar";
 import PostRenderer from "@/components/post-renderer";
 import { TypographyP } from "@/components/typography/typography-p";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
@@ -8,35 +7,28 @@ import { Button } from "@/components/ui/button";
 import useFetch from "@/hooks/use-fetch";
 import { Post } from "@/types";
 import { AlertCircleIcon } from "lucide-react";
-import { useState } from "react";
+import { use } from "react";
 import Masonry from "react-responsive-masonry";
 
-export default function Home() {
-  const [selectedValue, setSelectedValue] = useState("/");
-  const [searchQuery, setSearchQuery] = useState("");
+export default function SubredditPage({
+  params,
+}: {
+  params: Promise<{ subreddit: string }>;
+}) {
+  const { subreddit } = use(params);
 
-  const {
-    data: posts,
-    after,
-    loading,
-    error,
-    fetchNextPage,
-  } = useFetch<Post>(`${selectedValue}.json`, {
-    sr_detail: true,
-    debounceDelay: 300,
-    limit: 100,
-    nsfw: true,
-  });
+  const { data, loading, error, after, fetchNextPage } = useFetch<Post>(
+    `/r/${subreddit}.json`,
+    {
+      limit: 100,
+      sr_detail: true,
+      nsfw: true,
+      debounceDelay: 300,
+    },
+  );
 
   return (
-    <div>
-      <NavBar
-        selectedValue={selectedValue}
-        setSelectedValue={setSelectedValue}
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
-      />
-
+    <div className="mt-4">
       {error.length > 0 && (
         <Alert variant="destructive">
           <AlertCircleIcon />
@@ -47,16 +39,16 @@ export default function Home() {
         </Alert>
       )}
 
-      <div className="w-full max-w-[1480px] mx-auto mt-22 px-4">
+      <div className="w-full max-w-[1480px] mx-auto px-4">
         <Masonry gutter="8px">
-          {posts.map((post) => (
+          {data.map((post) => (
             <PostRenderer key={post.data.id} post={post} />
           ))}
         </Masonry>
       </div>
 
       {loading && (
-        <div className="flex justify-center items-center h-16 mb-y">
+        <div className="flex justify-center items-center h-16 my-6">
           <div className="w-16 h-16 border-4 border-dashed rounded-full animate-spin border-accent-foreground"></div>
         </div>
       )}

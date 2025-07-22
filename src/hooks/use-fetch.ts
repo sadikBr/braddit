@@ -1,5 +1,5 @@
 import { Post } from "@/types";
-import axios from "axios";
+import axios, { isAxiosError } from "axios";
 import { useCallback, useEffect, useState } from "react";
 
 const baseRequest = axios.create({
@@ -7,7 +7,20 @@ const baseRequest = axios.create({
   timeout: 20000,
 });
 
-export default function useFetch<T>(endpoint: string) {
+export default function useFetch<T>(
+  endpoint: string,
+  options: {
+    limit: number;
+    sr_detail: boolean;
+    debounceDelay: number;
+    nsfw: boolean;
+  } = {
+    limit: 100,
+    sr_detail: false,
+    debounceDelay: 300,
+    nsfw: false,
+  },
+) {
   const [data, setData] = useState<T[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -22,7 +35,9 @@ export default function useFetch<T>(endpoint: string) {
         const response = await baseRequest.get(endpoint, {
           params: {
             after,
-            sr_detail: true,
+            sr_detail: options.sr_detail,
+            limit: options.limit,
+            include_over_18: options.nsfw,
           },
         });
         setData((prevData) => [
@@ -33,19 +48,35 @@ export default function useFetch<T>(endpoint: string) {
         ]);
         setAfter(response.data.data.after);
       } catch (error) {
-        setError((error as Error).message);
+        if (isAxiosError(error)) {
+          if (error.response) {
+            setError(
+              `Server Error: ${error.response.status} - ${error.response.data.message || "Unknown error"}`,
+            );
+          } else if (error.request) {
+            setError("Network Error: No response received");
+          } else {
+            setError("Unknown Error");
+          }
+        } else {
+          setError("Unknown Error");
+        }
       } finally {
         setLoading(false);
       }
     },
-    [endpoint],
+    [endpoint, options.limit, options.sr_detail],
   );
 
   useEffect(() => {
-    setData([]);
-    setAfter("");
-    fetchData();
-  }, [fetchData]);
+    const timeout = setTimeout(() => {
+      setData([]);
+      setAfter("");
+      fetchData();
+    }, options.debounceDelay);
+
+    return () => clearTimeout(timeout);
+  }, [fetchData, options.debounceDelay]);
 
   function fetchNextPage() {
     fetchData(after);

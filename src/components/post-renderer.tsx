@@ -1,6 +1,7 @@
 import { Post } from "@/types";
 import PostCard from "./post-card";
 import Image from "next/image";
+import { TypographyP } from "./typography/typography-p";
 
 type PostAttributes = {
   type: string;
@@ -60,7 +61,7 @@ export default function PostRenderer({ post }: { post: Post }) {
   return (
     <PostCard post={post}>
       {extractedAttributes.type === "text" && (
-        <div className="prose max-w-none">{extractedAttributes.text}</div>
+        <TypographyP>{extractedAttributes.text}</TypographyP>
       )}
       {extractedAttributes.type === "image" && (
         <Image
@@ -68,6 +69,7 @@ export default function PostRenderer({ post }: { post: Post }) {
           alt={extractedAttributes.alt!}
           width={extractedAttributes.width}
           height={extractedAttributes.height}
+          loading="lazy"
           className="w-full h-auto"
         />
       )}

@@ -50,9 +50,13 @@ export default function PostCard({
 
           <div>&#x2022;</div>
 
-          <Link className="hover:underline" href={`/u/${post.data.author}`}>
+          {post.data.author !== "[deleted]" ? (
+            <Link className="hover:underline" href={`/u/${post.data.author}`}>
+              <div className="text-xs">u/{post.data.author}</div>
+            </Link>
+          ) : (
             <div className="text-xs">u/{post.data.author}</div>
-          </Link>
+          )}
 
           <div>&#x2022;</div>
 
