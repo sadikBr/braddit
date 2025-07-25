@@ -2,13 +2,12 @@
 
 import PostRenderer from "@/components/post-renderer";
 import { TypographyP } from "@/components/typography/typography-p";
-import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import useFetch from "@/hooks/use-fetch";
 import { Post } from "@/types";
 import { AlertCircleIcon } from "lucide-react";
 import { use } from "react";
-import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 
 export default function SubredditPage({
   params,
@@ -39,19 +38,16 @@ export default function SubredditPage({
         </Alert>
       )}
 
-      <div className="w-full max-w-[1480px] mx-auto px-4">
-        <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 750: 2, 900: 3 }}>
-          <Masonry>
-            {data.map((post) => (
-              <PostRenderer key={post.data.id} post={post} />
-            ))}
-          </Masonry>
-        </ResponsiveMasonry>
+      <div className="w-full columns-3 break-inside-avoid max-w-[1480px] mx-auto px-4">
+        {data.map((post: Post) => (
+          <PostRenderer key={post.data.id} post={post} />
+        ))}
       </div>
 
       {loading && (
         <div className="flex justify-center items-center h-16 my-6">
-          <div className="w-16 h-16 border-4 border-dashed rounded-full animate-spin border-accent-foreground"></div>
+          <div className="w-16 h-16 border-4 border-dashed rounded-full animate-spin border-accent-foreground">
+          </div>
         </div>
       )}
 

@@ -19,13 +19,12 @@ export default function PostCard({
   post: Post;
   children: React.ReactNode;
 }) {
-  const subredditImageUrl =
-    post.data.sr_detail.community_icon?.split("?")[0] ||
+  const subredditImageUrl = post.data.sr_detail.community_icon?.split("?")[0] ||
     post.data.sr_detail.header_img ||
     post.data.sr_detail.icon_img;
 
   return (
-    <Card className="w-full h-fit p-3">
+    <Card className="w-full h-fit p-3 break-inside-avoid mb-4">
       <CardHeader className="px-0">
         <CardDescription className="flex items-center gap-2 mb-2">
           <Link
@@ -52,13 +51,13 @@ export default function PostCard({
 
           <div>&#x2022;</div>
 
-          {post.data.author !== "[deleted]" ? (
-            <Link className="hover:underline" href={`/u/${post.data.author}`}>
-              <div className="text-xs">u/{post.data.author}</div>
-            </Link>
-          ) : (
-            <div className="text-xs">u/{post.data.author}</div>
-          )}
+          {post.data.author !== "[deleted]"
+            ? (
+              <Link className="hover:underline" href={`/u/${post.data.author}`}>
+                <div className="text-xs">u/{post.data.author}</div>
+              </Link>
+            )
+            : <div className="text-xs">u/{post.data.author}</div>}
 
           <div>&#x2022;</div>
 

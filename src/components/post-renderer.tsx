@@ -25,8 +25,8 @@ function getPostTypeAndRequiredRenderingAttributes(post: Post) {
   ) {
     postAttributes["type"] = "image";
     postAttributes["url"] = post.data.url_overridden_by_dest || post.data.url;
-    postAttributes["width"] = 1980;
-    postAttributes["height"] = 1080;
+    postAttributes["width"] = 400;
+    postAttributes["height"] = 640;
     postAttributes["alt"] = post.data.title;
   } else if (post.data.url.match(/(mp4|webm)$/g)) {
     postAttributes["type"] = "video";
@@ -38,8 +38,7 @@ function getPostTypeAndRequiredRenderingAttributes(post: Post) {
   ) {
     postAttributes["type"] = "video";
 
-    const redditVideo =
-      post.data.media?.reddit_video ||
+    const redditVideo = post.data.media?.reddit_video ||
       post.data.secure_media?.reddit_video ||
       post.data.preview?.reddit_video_preview;
     if (redditVideo) {
@@ -69,8 +68,7 @@ export default function PostRenderer({ post }: { post: Post }) {
           alt={extractedAttributes.alt!}
           width={extractedAttributes.width}
           height={extractedAttributes.height}
-          loading="lazy"
-          fetchPriority="high"
+          sizes="(max-width: 650px) 80vw, (max-width: 1200px) 35vw, 25vw"
           className="w-full h-auto"
         />
       )}

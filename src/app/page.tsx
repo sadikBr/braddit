@@ -3,13 +3,12 @@
 import NavBar from "@/components/nav-bar";
 import PostRenderer from "@/components/post-renderer";
 import { TypographyP } from "@/components/typography/typography-p";
-import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import useFetch from "@/hooks/use-fetch";
 import { Post } from "@/types";
 import { AlertCircleIcon } from "lucide-react";
 import { useState } from "react";
-import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 
 export default function Home() {
   const [selectedValue, setSelectedValue] = useState("/");
@@ -47,21 +46,16 @@ export default function Home() {
         </Alert>
       )}
 
-      <div className="w-full max-w-[1480px] mx-auto mt-22 px-4">
-        <ResponsiveMasonry
-          columnsCountBreakPoints={{ 350: 1, 750: 2, 1200: 3 }}
-        >
-          <Masonry>
-            {posts.map((post) => (
-              <PostRenderer key={post.data.id} post={post} />
-            ))}
-          </Masonry>
-        </ResponsiveMasonry>
+      <div className="w-full columns-3 max-w-[1480px] mx-auto mt-22 px-4">
+        {posts.map((post: Post) => (
+          <PostRenderer key={post.data.id} post={post} />
+        ))}
       </div>
 
       {loading && (
         <div className="flex justify-center items-center h-16 my-6">
-          <div className="w-16 h-16 border-4 border-dashed rounded-full animate-spin border-accent-foreground"></div>
+          <div className="w-16 h-16 border-4 border-dashed rounded-full animate-spin border-accent-foreground">
+          </div>
         </div>
       )}
 
