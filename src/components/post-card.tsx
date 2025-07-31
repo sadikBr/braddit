@@ -36,8 +36,7 @@ export default function PostCard({
                 <Image
                   src={subredditImageUrl}
                   alt="Subreddit Profile Image"
-                  priority={true}
-                  unoptimized={true}
+                  priority
                   width={128}
                   height={128}
                   className="w-full h-full object-contain bg-white"

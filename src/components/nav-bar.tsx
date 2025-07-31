@@ -20,28 +20,19 @@ import { Subreddit } from "@/types";
 import { Skeleton } from "./ui/skeleton";
 import Image from "next/image";
 
-const NavBar = ({
-  selectedValue,
-  setSelectedValue,
-  searchQuery,
-  setSearchQuery,
-}: {
-  selectedValue: string;
-  setSelectedValue: React.Dispatch<React.SetStateAction<string>>;
-  searchQuery: string;
-  setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
-}) => {
+const NavBar = () => {
   const [isFocused, setIsFocused] = useState(false);
+  const [query, setQuery] = useState("");
 
   const endpoint = useMemo(
-    () => `/search.json?q=${searchQuery}&type=sr`,
-    [searchQuery],
+    () => `/search.json?q=${query}&type=sr`,
+    [query],
   );
 
   const { data: subreddits, loading } = useFetch<Subreddit>(endpoint, {
     limit: 10,
     sr_detail: false,
-    debounceDelay: 120,
+    debounceDelay: 320,
     nsfw: true,
   });
 
@@ -50,20 +41,26 @@ const NavBar = ({
       <div className="flex justify-between items-center w-full px-4 xl:px-0 xl:w-[1480px] mx-auto py-4">
         <div className="flex items-center gap-4">
           <TypographyH1>Braddit</TypographyH1>
-          <Select value={selectedValue} onValueChange={setSelectedValue}>
+          <Select value={"/"}>
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Select a subreddit" />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
                 <SelectItem value="/">
-                  <IoHome /> Home
+                  <Link className="w-full h-full flex items-center gap-2" href={"/"}>
+                    <IoHome /> Home
+                  </Link>
                 </SelectItem>
                 <SelectItem value="/r/popular">
-                  <FaArrowUpRightDots /> Popular
+                  <Link className="w-full h-full flex items-center gap-2" href={"/r/popular"}>
+                    <FaArrowUpRightDots /> Popular
+                  </Link>
                 </SelectItem>
                 <SelectItem value="/r/all">
-                  <FaBorderAll /> All
+                  <Link className="w-full h-full flex items-center gap-2" href={"/r/all"}>
+                    <FaBorderAll /> All
+                  </Link>
                 </SelectItem>
               </SelectGroup>
             </SelectContent>
@@ -73,18 +70,18 @@ const NavBar = ({
         <div className="relative flex flex-1 mx-16">
           <Input
             placeholder="search"
-            value={searchQuery}
-            onChange={(event) => setSearchQuery(event.target.value)}
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
             onFocus={() => setIsFocused(true)}
             onBlur={() => setTimeout(() => setIsFocused(false), 100)}
           />
-          {isFocused && searchQuery !== "" && (
+          {isFocused && query !== "" && (
             <div className="flex flex-col absolute top-12 left-0 w-full bg-background border-2 border-accent rounded-md">
               <Link
-                href={`/search?q=${searchQuery}`}
+                href={`/search?q=${query}`}
                 className="flex items-center w-full p-3 gap-2 hover:bg-accent"
               >
-                <IoSearch /> Search for &quot;{searchQuery}&quot;
+                <IoSearch /> Search for &quot;{query}&quot;
               </Link>
 
               {/* Autocomplete results */}
@@ -112,8 +109,7 @@ const NavBar = ({
                       {imageUrl?.length > 0 ? (
                         <Image
                           className="rounded-full w-8 h-8 object-contain"
-                          unoptimized={true}
-                          priority={true}
+                          priority
                           src={imageUrl}
                           alt={subreddit.data.display_name}
                           width={1980}
@@ -140,7 +136,7 @@ const NavBar = ({
 
         <ThemeToggler />
       </div>
-    </div>
+    </div >
   );
 };
 
