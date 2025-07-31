@@ -3,13 +3,12 @@
 import { ThemeToggler } from "@/components/theme/theme-toggler";
 import { TypographyH1 } from "./typography/typography-h1";
 import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { IoHome, IoSearch } from "react-icons/io5";
 import { FaArrowUpRightDots, FaBorderAll } from "react-icons/fa6";
 import { Input } from "@/components/ui/input";
@@ -19,10 +18,20 @@ import useFetch from "@/hooks/use-fetch";
 import { Subreddit } from "@/types";
 import { Skeleton } from "./ui/skeleton";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
+import { CgProfile } from "react-icons/cg";
 
 const NavBar = () => {
   const [isFocused, setIsFocused] = useState(false);
   const [query, setQuery] = useState("");
+
+  const pathname = usePathname();
+  const currentPage = useMemo(() => {
+    if (pathname === "/") return <div className="flex w-44 items-center gap-2 border-2 pr-16 p-2 rounded-md"><IoHome /> Home</div>;
+    else if (pathname === "/r/popular") return <div className="flex w-44 items-center gap-2 border-2 p-2 py-2 rounded-md"><FaArrowUpRightDots /> Popular</div>
+    else if (pathname === "/r/all") return <div className="flex w-44 items-center gap-2 border-2 p-2 py-2 rounded-md"><FaBorderAll /> All</div>
+    else return <div className="flex w-44 items-center gap-2 border-2 p-2 py-2 rounded-md"><CgProfile /> {pathname}</div>
+  }, [pathname]);
 
   const endpoint = useMemo(
     () => `/search.json?q=${query}&type=sr`,
@@ -39,32 +48,40 @@ const NavBar = () => {
   return (
     <div className="fixed top-0 left-0 z-50 w-screen bg-background">
       <div className="flex justify-between items-center w-full px-4 xl:px-0 xl:w-[1480px] mx-auto py-4">
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-8">
           <TypographyH1>Braddit</TypographyH1>
-          <Select value={"/"}>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Select a subreddit" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectItem value="/">
-                  <Link className="w-full h-full flex items-center gap-2" href={"/"}>
+          <DropdownMenu>
+            <DropdownMenuTrigger className="cursor-pointer" asChild>
+              {currentPage}
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-56" align="start">
+              <DropdownMenuGroup>
+                {
+                  !["/", "/r/popular", "/r/all"].includes(pathname) && <DropdownMenuItem asChild>
+                    <Link href="#" className="flex items-center gap-2 font-semibold">
+                      <CgProfile /> {pathname}
+                    </Link>
+                  </DropdownMenuItem>
+
+                }
+                <DropdownMenuItem asChild>
+                  <Link href="/" className="flex items-center gap-2">
                     <IoHome /> Home
                   </Link>
-                </SelectItem>
-                <SelectItem value="/r/popular">
-                  <Link className="w-full h-full flex items-center gap-2" href={"/r/popular"}>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/r/popular" className="flex items-center gap-2">
                     <FaArrowUpRightDots /> Popular
                   </Link>
-                </SelectItem>
-                <SelectItem value="/r/all">
-                  <Link className="w-full h-full flex items-center gap-2" href={"/r/all"}>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/r/all" className="flex items-center gap-2">
                     <FaBorderAll /> All
                   </Link>
-                </SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
 
         <div className="relative flex flex-1 mx-16">
