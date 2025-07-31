@@ -1,10 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function GET(_request: NextRequest, { params }: { params: Promise<{ subreddit: string }> }) {
+export async function GET(request: NextRequest, { params }: { params: Promise<{ subreddit: string }> }) {
   const { subreddit } = await params;
+  const { searchParams } = request.nextUrl;
+
+  const after = searchParams.get('after') || '';
+  const before = searchParams.get('before') || '';
 
   try {
-    const response = await fetch(`https://www.reddit.com/r/${subreddit}/hot.json?limit=30&include_over_18=true&sr_detail=true`, {
+    const response = await fetch(`https://www.reddit.com/r/${subreddit}/hot.json?after=${after}&before=${before}limit=30&include_over_18=true&sr_detail=true`, {
       cache: "force-cache",
       next: {
         revalidate: 60 * 60 * 24

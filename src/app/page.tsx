@@ -1,8 +1,5 @@
-import NavBar from "@/components/nav-bar";
 import PostRenderer from "@/components/post-renderer";
-import { TypographyP } from "@/components/typography/typography-p";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Button } from "@/components/ui/button";
 import { Post, RedditListing } from "@/types";
 import { AlertCircleIcon } from "lucide-react";
 
