@@ -8,12 +8,11 @@ export default async function SubredditPage({
 }: {
   params: Promise<{ subreddit: string }>;
 }) {
-  const { subreddit } = await (params);
+  const { subreddit } = await params;
   let data: RedditListing;
 
   try {
-
-    const response = await fetch(`/api/r/${subreddit}`);
+    const response = await fetch(`${process.env.BASE_URL}/api/r/${subreddit}`);
 
     if (!response.ok) {
       return (
@@ -28,9 +27,7 @@ export default async function SubredditPage({
     }
 
     data = await response.json();
-
   } catch (_error) {
-
     return (
       <Alert variant="destructive">
         <AlertCircleIcon />
@@ -40,7 +37,6 @@ export default async function SubredditPage({
         </AlertDescription>
       </Alert>
     );
-
   }
 
   return (

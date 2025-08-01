@@ -7,8 +7,7 @@ export default async function Home() {
   let data: RedditListing;
 
   try {
-
-    const response = await fetch(`/api/r/awww`);
+    const response = await fetch(`${process.env.BASE_URL}/api/r/awww`);
 
     if (!response.ok) {
       return (
@@ -23,9 +22,7 @@ export default async function Home() {
     }
 
     data = await response.json();
-
   } catch (_error) {
-
     return (
       <Alert variant="destructive">
         <AlertCircleIcon />
@@ -35,7 +32,6 @@ export default async function Home() {
         </AlertDescription>
       </Alert>
     );
-
   }
 
   return (
