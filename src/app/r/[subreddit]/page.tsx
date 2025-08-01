@@ -8,7 +8,7 @@ export default async function SubredditPage({
 }: {
   params: Promise<{ subreddit: string }>;
 }) {
-  const baseUrl = process.env.PRODUCTION_URL || "http://localhost:3000";
+  const baseUrl = process.env.VERCEL_ENV === "production" ? "https://braddit.vercel.app" : "http://localhost:3000";
 
   const { subreddit } = await (params);
   let data: RedditListing;

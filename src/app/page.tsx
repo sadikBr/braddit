@@ -4,7 +4,7 @@ import { Post, RedditListing } from "@/types";
 import { AlertCircleIcon } from "lucide-react";
 
 export default async function Home() {
-  const baseUrl = process.env.PRODUCTION_URL || "http://localhost:3000";
+  const baseUrl = process.env.VERCEL_ENV === "production" ? "https://braddit.vercel.app" : "http://localhost:3000";
 
   let data: RedditListing;
 
