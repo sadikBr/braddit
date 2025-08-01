@@ -4,13 +4,11 @@ import { Post, RedditListing } from "@/types";
 import { AlertCircleIcon } from "lucide-react";
 
 export default async function Home() {
-  const baseUrl = process.env.VERCEL_ENV === "production" ? "https://braddit.vercel.app" : "http://127.0.0.1:3000";
-
   let data: RedditListing;
 
   try {
 
-    const response = await fetch(`${baseUrl}/api/r/awww`);
+    const response = await fetch(`/api/r/awww`);
 
     if (!response.ok) {
       return (
