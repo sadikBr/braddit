@@ -2,15 +2,9 @@ import PostRenderer from "@/components/post-renderer";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Post, RedditListing } from "@/types";
 import { AlertCircleIcon } from "lucide-react";
-import { headers } from "next/headers";
 
 export default async function Home() {
-  const headersList = await headers();
-
-  const host = headersList.get("x-forwarded-host") || headersList.get("host");
-  const protocol = headersList.get("x-forwarded-proto") || "http";
-
-  const baseUrl = `${protocol}://${host}`;
+  const baseUrl = process.env.PRODUCTION_URL || "http://localhost:3000";
 
   let data: RedditListing;
 
