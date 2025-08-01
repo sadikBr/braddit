@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function GET(request: NextRequest, { params }: { params: { subreddit: string } }) {
-  const { subreddit } = params;
+export async function GET(request: NextRequest, { params }: { params: Promise<{ subreddit: string }> }) {
+  const { subreddit } = await params;
   const { searchParams } = request.nextUrl;
 
   const after = searchParams.get('after') || '';
