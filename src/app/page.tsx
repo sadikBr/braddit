@@ -2,24 +2,49 @@ import PostRenderer from "@/components/post-renderer";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Post, RedditListing } from "@/types";
 import { AlertCircleIcon } from "lucide-react";
+import { headers } from "next/headers";
 
 export default async function Home() {
+  const headersList = await headers();
 
-  const response = await fetch("http://localhost:3000/api/r/aww");
+  const host = headersList.get("x-forwarded-host") || headersList.get("host");
+  const protocol = headersList.get("x-forwarded-proto") || "http";
 
-  if (!response.ok) {
+  const baseUrl = `${protocol}://${host}`;
+
+  let data: RedditListing;
+
+  try {
+
+    const response = await fetch(`${baseUrl}/api/r/aww`);
+
+    if (!response.ok) {
+      return (
+        <Alert variant="destructive">
+          <AlertCircleIcon />
+          <AlertTitle>Error fetching subreddit</AlertTitle>
+          <AlertDescription>
+            Please try again later or check the subreddit name.
+          </AlertDescription>
+        </Alert>
+      );
+    }
+
+    data = await response.json();
+
+  } catch (_error) {
+
     return (
       <Alert variant="destructive">
         <AlertCircleIcon />
         <AlertTitle>Error fetching subreddit</AlertTitle>
         <AlertDescription>
-          Please try again later or check the subreddit name.
+          An unexpected error occurred. Please try again later.
         </AlertDescription>
       </Alert>
     );
-  }
 
-  const data: RedditListing = await response.json();
+  }
 
   return (
     <div>
@@ -28,8 +53,6 @@ export default async function Home() {
           <PostRenderer key={post.data.id} post={post} />
         ))}
       </div>
-
-      {/* TODO: Implement Pagination */}
     </div>
   );
 }
