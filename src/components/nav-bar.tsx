@@ -51,7 +51,7 @@ const NavBar = () => {
         <div className="flex items-center gap-8">
           <TypographyH1>Braddit</TypographyH1>
           <DropdownMenu>
-            <DropdownMenuTrigger className="cursor-pointer" asChild>
+            <DropdownMenuTrigger className="cursor-pointer w-56" asChild>
               {currentPage}
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56" align="start">

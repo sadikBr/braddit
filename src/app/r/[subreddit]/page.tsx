@@ -15,7 +15,9 @@ export default async function SubredditPage({
 
   try {
 
-    const response = await fetch(`${baseUrl}/api/r/${subreddit}`);
+    const response = await fetch(`${baseUrl}/api/r/${subreddit}`, {
+      cache: 'no-cache'
+    });
 
     if (!response.ok) {
       return (
