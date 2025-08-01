@@ -10,7 +10,7 @@ export default async function Home() {
 
   try {
 
-    const response = await fetch(`${baseUrl}/api/r/awww`, {
+    const response = await fetch(`https://braddit.vercel.app/api/r/awww`, {
       cache: 'no-cache'
     });
 
