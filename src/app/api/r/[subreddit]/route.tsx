@@ -9,10 +9,10 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
 
   try {
     const response = await fetch(`https://www.reddit.com/r/${subreddit}/hot.json?after=${after}&before=${before}limit=30&include_over_18=true&sr_detail=true`, {
-      cache: "force-cache",
-      next: {
-        revalidate: 60 * 60 * 24
-      }
+      // cache: "force-cache",
+      // next: {
+      //   revalidate: 60 * 60 * 24
+      // }
     });
     if (!response.ok) {
       throw new Error(`Error fetching data: ${response.statusText}`);

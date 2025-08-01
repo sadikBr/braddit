@@ -10,9 +10,7 @@ export default async function Home() {
 
   try {
 
-    const response = await fetch(`${baseUrl}/api/r/awww`, {
-      cache: 'no-cache'
-    });
+    const response = await fetch(`${baseUrl}/api/r/awww`);
 
     if (!response.ok) {
       return (
